@@ -3,26 +3,33 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from models.abstract.user_abc import UserAbc
 from models.user import User
+from schemas.user import UserCreate
 
 
-class UserRepository(UserAbc):
-    def get_user_by_email(self, db: Session, email: string):
-        return db.query(User).filter(User.email == email).first()
+class UserRepository:
+    @classmethod
+    def get_user_by_email(cls, db: Session, email: string):
+        return db.query(User).filter(User.email == email)
 
-    def create(self, db: Session, user: User): #should be use pydantic schemas
+    @classmethod
+    def create(cls, db: Session, user: UserCreate):  # should be use pydantic schemas
         db_user = User(email=user.email, password=user.password)
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
         return db_user
 
-    def update(self, db: Session, user: User):
+    @classmethod
+    def update(cls, db: Session, user: User):
         pass
 
-    def get(self, db: Session, uuid: uuid):
-        pass
+    @classmethod
+    def get(cls, db: Session, user_id: uuid):
+        return db.query(User).filter(User.id == user_id)
 
-    def delete(self, db: Session, uuid: uuid):
-        pass
+    @classmethod
+    def delete(cls, db: Session, user_id: uuid):
+        user = db.query(User).get(user_id)
+        if user:
+            db.delete(user)

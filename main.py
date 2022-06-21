@@ -1,18 +1,18 @@
-import uuid
-
 from fastapi import FastAPI
 
 import database
-from repositories.user_repository import UserRepository
+from routers import user
+
+database.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
+app.include_router(user.router)
 
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-#userrp = UserRepository()
 
 @app.get("/hello/{name}")
 async def say_hello(name: str):
