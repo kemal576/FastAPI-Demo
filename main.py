@@ -1,19 +1,13 @@
 from fastapi import FastAPI
-
 import database
-from routers import user
+from routers import user_router
 
 database.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
-app.include_router(user.router)
+app.include_router(user_router.router)
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+    return {"message": "Go to OpenAPI documentation --> localhost:8000/docs"}
