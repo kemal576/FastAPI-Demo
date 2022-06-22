@@ -1,2 +1,2 @@
 class Settings:
-    POSTGRES_CONN_STR: str = "postgres://postgres:postgrespw@localhost:49154"
+    POSTGRES_CONN_STR: str = "postgresql://postgres:password@localhost:5432"
